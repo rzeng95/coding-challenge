@@ -27,7 +27,7 @@ function runSolutions(sourceCount) {
      */
     const syncLogSources = [];
     for (let i = 0; i < sourceCount; i++) {
-      syncLogSources.push(new LogSource());
+      syncLogSources.push(new LogSource(i));
     }
     try {
       require("./solution/sync-sorted-merge")(syncLogSources, new Printer());
@@ -52,7 +52,7 @@ function runSolutions(sourceCount) {
        */
       const asyncLogSources = [];
       for (let i = 0; i < sourceCount; i++) {
-        asyncLogSources.push(new LogSource());
+        asyncLogSources.push(new LogSource(i));
       }
       require("./solution/async-sorted-merge")(asyncLogSources, new Printer())
         .then(resolve)

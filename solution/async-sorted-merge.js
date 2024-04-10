@@ -2,8 +2,30 @@
 
 // Print all entries, across all of the *async* sources, in chronological order.
 
-module.exports = (logSources, printer) => {
-  return new Promise((resolve, reject) => {
-    resolve(console.log("Async sort complete."));
+module.exports = async (logSources, printer) => {
+  const combinedLogEntries = [];
+
+  await Promise.all(
+    logSources.map(async (logSource) => {
+      combinedLogEntries.push(logSource.last);
+      let popped = await logSource.popAsync();
+
+      while (popped !== false) {
+        combinedLogEntries.push(popped);
+        popped = logSource.pop();
+      }
+    })
+  );
+
+  combinedLogEntries.sort((a, b) => {
+    return a.date.valueOf() - b.date.valueOf();
   });
+
+  combinedLogEntries.forEach((logEntry) => {
+    printer.print(logEntry);
+  });
+
+  printer.done();
+
+  return console.log("Async sort complete.");
 };
