@@ -12,7 +12,7 @@ module.exports = async (logSources, printer) => {
 
       while (popped !== false) {
         combinedLogEntries.push(popped);
-        popped = logSource.pop();
+        popped = await logSource.popAsync();
       }
     })
   );
